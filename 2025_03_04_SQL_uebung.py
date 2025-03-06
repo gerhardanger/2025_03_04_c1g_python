@@ -3,11 +3,11 @@ from pathlib import Path
 
 
 def execute_query_and_print_result(sql):
+    print(__file__)
 
     BASE_PATH = Path(__file__).parent
+    print("TYPE: ", type(BASE_PATH))
     DB_PATH = BASE_PATH / "data/2025_03_03_Material_und_Gehalt_angereichert.db"
-
-    connection = None
 
     try:
         connection = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
@@ -25,7 +25,8 @@ def uebung_1():
     execute_query_and_print_result(sql)
 
 def uebung_2():
-    sql = """SELECT Mitarbeiter.vorname, Mitarbeiter.nachname,  Materialausgabe.ausgabedatum, Material.id
+    sql = """SELECT Mitarbeiter.vorname, Mitarbeiter.nachname,  
+                Materialausgabe.ausgabedatum, Material.id
                 FROM Mitarbeiter
                 INNER JOIN Materialausgabe ON Mitarbeiter.id = Materialausgabe.mitarbeiter_id
                 INNER JOIN Material ON Material.id = Materialausgabe.material_id
@@ -41,17 +42,20 @@ def uebung_3():
 def uebung_4():
     sql = """SELECT  Mitarbeiter.vorname, Mitarbeiter.nachname
                 FROM Mitarbeiter
-                LEFT JOIN Materialausgabe ON Mitarbeiter.id = Materialausgabe.mitarbeiter_id
+                LEFT JOIN Materialausgabe ON Mitarbeiter.id = 
+                Materialausgabe.mitarbeiter_id
                 WHERE Materialausgabe.id IS NULL"""
     execute_query_and_print_result(sql)
 
 def uebung_5():
     sql = """SELECT count(*) AS cnt, Material.typ FROM Material 
-                INNER JOIN Materialausgabe ON Materialausgabe.material_id = Material.id
+                INNER JOIN Materialausgabe ON Materialausgabe.material_id 
+                = Material.id
                 GROUP BY Material.typ
                 ORDER BY cnt ASC, typ ASC"""
     execute_query_and_print_result(sql)
 
+# DAS WIRD AUSGEFÜHRT, WENN DIE DATEI DIREKT ALS SKRIPT AUFGERUFEN WIRD!
 if __name__ == "__main__":
     uebung_1()
     uebung_2()
